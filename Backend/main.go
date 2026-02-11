@@ -17,7 +17,7 @@ type Product struct{
 }
 //--empty slice---
 var productList []Product
-
+//--------creating getProducts API-------
 func getProducts(w http.ResponseWriter, r *http.Request){
 
 	//---CORS HANDLING---
