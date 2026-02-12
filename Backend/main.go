@@ -17,6 +17,7 @@ type Product struct{
 }
 //--empty slice---
 var productList []Product
+
 //--------creating getProducts API-------
 func getProducts(w http.ResponseWriter, r *http.Request){
 
@@ -34,12 +35,53 @@ func getProducts(w http.ResponseWriter, r *http.Request){
 
 }
 
+//---creating creatproducts api----
+func createProducts(w http.ResponseWriter,r *http.Request){
+	//---CORS HANDLING---
+	w.Header().Set("Access-Control-Allow-Origin","*")
+	w.Header().Set("Access-Control-Allow-Methods","POST")
+	w.Header().Set("Access-Control-Allow-Headers","Content-Type")
+	w.Header().Set("Content-Type","application/json")
+
+	if r.Method=="OPTIONS"{
+		w.WriteHeader(200)
+		return
+	}
+	if r.Method!="POST"{
+		http.Error(w,"Please give POST method",400)
+		return
+	}
+
+	/*
+	1.take body information from r.Body
+	2.create an instance using Product struct with body information
+	3.append the instance into productList
+	*/
+	var newProduct Product //creating instance
+	decoder:= json.NewDecoder(r.Body)
+	err:=decoder.Decode(&newProduct)
+	if err!=nil{
+		fmt.Println(err)
+		http.Error(w,"please give valid json",400)
+		return
+	}
+	//assign id
+	newProduct.ID = len(productList)+1
+	productList = append(productList, newProduct)
+
+	w.WriteHeader(201)
+	encoder:=json.NewEncoder(w)
+	encoder.Encode(newProduct)
+}
 func main(){
 	//-----creating router-----
 	mux:=http.NewServeMux()
 
-	//---routes---
+	//---routes for getting products---
 	mux.HandleFunc("/products",getProducts)
+
+	//----routes for creating products-----
+	mux.HandleFunc("/create-products",createProducts)
 
 	fmt.Println("Server running on port: 8080")
 	

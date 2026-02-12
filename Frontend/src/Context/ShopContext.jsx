@@ -6,24 +6,26 @@ const ShopContextProvider = (props) => {
   const [all_product, setAllProduct] = useState([]);
   const [cartItems, setCartItems] = useState({});
 
-  useEffect(() => {
-    fetch("http://localhost:8080/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setAllProduct(data);
+  const fetchProducts = async () => {
+    const res = await fetch("http://localhost:8080/products");
+    const data = await res.json();
+    setAllProduct(data);
 
-        const cart = {};
-        for (const p of data) cart[p.id] = 0;
-        setCartItems(cart);
-      })
-      .catch((err) => console.error("Failed to load products:", err));
+    // initialize cart keys by product IDs (only first time)
+    setCartItems((prev) => {
+      if (Object.keys(prev).length > 0) return prev;
+      const cart = {};
+      for (const p of data) cart[p.id] = 0;
+      return cart;
+    });
+  };
+
+  useEffect(() => {
+    fetchProducts();
   }, []);
 
   const addToCart = (itemId) => {
-    setCartItems((prev) => ({
-      ...prev,
-      [itemId]: (prev[itemId] || 0) + 1,
-    }));
+    setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 0) + 1 }));
   };
 
   const removeFromCart = (itemId) => {
@@ -46,19 +48,20 @@ const ShopContextProvider = (props) => {
   };
 
   const getTotalCartItems = () => {
-    let totalItem = 0;
-    for (const id in cartItems) totalItem += cartItems[id];
-    return totalItem;
+    let total = 0;
+    for (const id in cartItems) total += cartItems[id];
+    return total;
   };
 
   const contextValue = useMemo(
     () => ({
-      getTotalCartItems,
-      getTotalCartAmount,
       all_product,
+      fetchProducts,
       cartItems,
       addToCart,
       removeFromCart,
+      getTotalCartAmount,
+      getTotalCartItems,
     }),
     [all_product, cartItems]
   );
