@@ -6,6 +6,27 @@ import (
 	"net/http"
 )
 
+//---handling CORS----
+func handleCORS(w http.ResponseWriter){
+	w.Header().Set("Access-Control-Allow-Origin","*")
+	w.Header().Set("Access-Control-Allow-Methods",",GET,POST,PUT,PATCH,DELETE,OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers","Content-Type")
+	w.Header().Set("Content-Type","application/json")
+}
+//----handling preflight requests-----
+func handlePreflightReq(w http.ResponseWriter,r *http.Request){
+	if r.Method=="OPTIONS"{
+		w.WriteHeader(200)
+		return
+	}
+}
+
+//Sending data
+func sendData(w http.ResponseWriter,data interface{},statusCode int){
+	w.WriteHeader(statusCode)
+	encoder:=json.NewEncoder(w)
+	encoder.Encode(data)
+}
 //---creating product struct---
 type Product struct{
 	ID int `json:"id"`
@@ -22,31 +43,26 @@ var productList []Product
 func getProducts(w http.ResponseWriter, r *http.Request){
 
 	//---CORS HANDLING---
-	w.Header().Set("Access-Control-Allow-Origin","*")
-	w.Header().Set("Content-Type","application/json")
+	handleCORS(w)
+	handlePreflightReq(w,r)
 
 	if r.Method!="GET"{
 		http.Error(w,"Please give me GET request",400)
 		return
 	}
 
-	encoder:=json.NewEncoder(w)
-	encoder.Encode(productList)
+	sendData(w,productList,200)
+	
 
 }
 
 //---creating creatproducts api----
 func createProducts(w http.ResponseWriter,r *http.Request){
 	//---CORS HANDLING---
-	w.Header().Set("Access-Control-Allow-Origin","*")
-	w.Header().Set("Access-Control-Allow-Methods","POST")
-	w.Header().Set("Access-Control-Allow-Headers","Content-Type")
-	w.Header().Set("Content-Type","application/json")
-
-	if r.Method=="OPTIONS"{
-		w.WriteHeader(200)
-		return
-	}
+	handleCORS(w)
+	//handling preflight requests:
+	handlePreflightReq(w,r)
+	
 	if r.Method!="POST"{
 		http.Error(w,"Please give POST method",400)
 		return
@@ -69,9 +85,8 @@ func createProducts(w http.ResponseWriter,r *http.Request){
 	newProduct.ID = len(productList)+1
 	productList = append(productList, newProduct)
 
-	w.WriteHeader(201)
-	encoder:=json.NewEncoder(w)
-	encoder.Encode(newProduct)
+	sendData(w,newProduct,201)
+	 
 }
 func main(){
 	//-----creating router-----
