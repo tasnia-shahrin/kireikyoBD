@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"Backend/product"
+	"Backend/Database"
 	"Backend/util"
 	"net/http"
 )
@@ -9,6 +9,6 @@ import (
 //--------creating getProducts API-------
 func GetProducts(w http.ResponseWriter, r *http.Request){
 
-	util.SendData(w,product.ProductList,200)
+	util.SendData(w,Database.ProductList,200)
 
 }

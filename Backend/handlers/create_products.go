@@ -4,7 +4,7 @@ import(
 	"fmt"
 	"net/http"
 	"encoding/json"
-	"Backend/product"
+	"Backend/Database"
 	"Backend/util"
 )
 
@@ -18,7 +18,7 @@ func CreateProducts(w http.ResponseWriter,r *http.Request){
 	2.create an instance using Product struct with body information
 	3.append the instance into productList
 	*/
-	var newProduct product.Product //creating instance
+	var newProduct Database.Product //creating instance
 	decoder:= json.NewDecoder(r.Body)
 	err:=decoder.Decode(&newProduct)
 	if err!=nil{
@@ -27,8 +27,8 @@ func CreateProducts(w http.ResponseWriter,r *http.Request){
 		return
 	}
 	//assign id
-	newProduct.ID = len(product.ProductList)+1
-	product.ProductList = append(product.ProductList, newProduct)
+	newProduct.ID = len(Database.ProductList)+1
+	Database.ProductList = append(Database.ProductList, newProduct)
 
 	util.SendData(w,newProduct,201)
 	 
