@@ -1,4 +1,4 @@
-package main
+package globalRouter
 
 import(
 	
@@ -7,7 +7,7 @@ import(
 )
 
 //------global router: handle cors and preflight request--------
-func globalRouter(mux *http.ServeMux) http.Handler{
+func GlobalRouter(mux *http.ServeMux) http.Handler{
 	handleAllReq:=func(w http.ResponseWriter,r *http.Request){
 		//handling CORS
 		w.Header().Set("Access-Control-Allow-Origin","*")

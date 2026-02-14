@@ -1,4 +1,4 @@
-package main
+package product
 
 //---creating product struct---
 type Product struct{

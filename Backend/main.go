@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"Backend/product"
+	"Backend/handlers"
+	"Backend/globalRouter"
 )
 
 //---handling CORS----
@@ -27,15 +30,15 @@ func main(){
 
 	
 	//---routes for getting products---
-	mux.Handle("GET /products",http.HandlerFunc(getProducts))
+	mux.Handle("GET /products",http.HandlerFunc(handlers.GetProducts))
 
 	//----routes for creating products-----
 	// mux.HandleFunc("/create-products",createProducts)-->previous routing
-	mux.Handle("POST /create-products",http.HandlerFunc(createProducts)) //advanced routing
+	mux.Handle("POST /create-products",http.HandlerFunc(handlers.CreateProducts)) //advanced routing
 
 	fmt.Println("Server running on port: 8080")
 	
-	globalrouter:=globalRouter(mux)
+	globalrouter:= globalRouter.GlobalRouter(mux)
 	err:=http.ListenAndServe(":8080",globalrouter)
 	if err!=nil{
 		fmt.Println("Error occurs while starting the server",err)
@@ -44,7 +47,7 @@ func main(){
 }
 
 func init(){
-	prd1:= Product{
+	prd1:= product.Product{
 		ID:1,
 		Name: "Anua Niacinamide 10% + TXA 4% Serum – 30ml",
     	Category: "k-beauty",
@@ -52,7 +55,7 @@ func init(){
     	NewPrice: 1879.00,
     	OldPrice: 2730,
 	}
-	prd2:= Product{
+	prd2:= product.Product{
 		ID:2,
 		Name: "NIVEA UV Super Water Gel EX SPF50+ PA++++ 80g",
     	Category: "j-beauty",
@@ -60,6 +63,6 @@ func init(){
     	NewPrice: 1380,
     	OldPrice: 1410,
 	}
-	productList = append(productList, prd1)
-	productList = append(productList, prd2)
+	product.ProductList = append(product.ProductList, prd1)
+	product.ProductList = append(product.ProductList, prd2)
 }
