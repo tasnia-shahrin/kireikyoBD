@@ -32,7 +32,7 @@ const AddProduct = () => {
       return;
     }
 
-    const res = await fetch("http://localhost:8080/create-products", {
+    const res = await fetch("http://localhost:8080/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(product),
@@ -88,9 +88,7 @@ const AddProduct = () => {
         <select value={productDetails.category} onChange={changeHandler} name="category" className="add-product-selector">
           <option value="k-beauty">K-Beauty</option>
           <option value="j-beauty">J-Beauty</option>
-          <option value="women">Women</option>
-          <option value="men">Men</option>
-          <option value="kid">Kid</option>
+          
         </select>
       </div>
 

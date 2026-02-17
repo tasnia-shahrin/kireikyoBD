@@ -17,7 +17,9 @@ func Serve(){
 
 	//----routes for creating products-----
 	// mux.HandleFunc("/create-products",createProducts)-->previous routing
-	mux.Handle("POST /create-products",http.HandlerFunc(handlers.CreateProducts)) //advanced routing
+	mux.Handle("POST /products",http.HandlerFunc(handlers.CreateProducts)) //advanced routing
+
+	mux.Handle("GET /products/{id}",http.HandlerFunc(handlers.GetProductByID))
 
 	fmt.Println("Server running on port: 8080")
 	
