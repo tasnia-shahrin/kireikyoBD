@@ -1,7 +1,8 @@
 package main
 
-import(
+import (
 	"Backend/cmd"
+	
 )
 
 //---handling CORS----
@@ -21,6 +22,7 @@ import(
 
 
 func main(){
+	
 	cmd.Serve()
 }
 

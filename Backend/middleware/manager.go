@@ -11,6 +11,7 @@ type Manager struct{
 	globalMiddlewares []Middleware
 }
 
+//manager object
 func NewManager() *Manager{
 	return &Manager{
 		globalMiddlewares: make([]Middleware, 0),
@@ -37,8 +38,8 @@ func (mngr *Manager) With(next http.Handler,middlewares ...Middleware) http.Hand
 func (mngr *Manager) WrapMux(handler http.Handler) http.Handler{
 	
 		h:=handler
-		//[CorsWithPreflight,logger]
-		//logger(corswithpreflight(mux))
+		//[Cors,Preflight,logger]
+		//logger(preflight(cors(mux)))
 		for _,middleware:= range mngr.globalMiddlewares{
 			h = middleware(h)
 		}
