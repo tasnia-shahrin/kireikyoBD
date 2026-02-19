@@ -45,5 +45,19 @@ func InitRoutes(mux *http.ServeMux,manager *middleware.Manager){
 			http.HandlerFunc(handlers.DeleteProduct),
 		),
 	)
+	//-----creating user api------
+	mux.Handle(
+		"POST /users",
+		manager.With(
+			http.HandlerFunc(handlers.CreateUser),
+		),
+	)
+	//----login api----
+	mux.Handle(
+		"POST /users/login",
+		manager.With(
+			http.HandlerFunc(handlers.Login),
+		),
+	)
 
 }
