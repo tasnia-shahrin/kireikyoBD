@@ -9,6 +9,6 @@ import (
 //--------creating getProducts API-------
 func GetProducts(w http.ResponseWriter, r *http.Request){
 
-	util.SendData(w,Database.ProductList,200)
+	util.SendData(w,Database.List(),200)
 
 }

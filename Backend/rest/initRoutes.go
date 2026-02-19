@@ -1,12 +1,12 @@
-package cmd
+package rest
 
 import (
-	"Backend/middleware"
+	"Backend/rest/middleware"
 	"net/http"
-	"Backend/handlers"
+	"Backend/rest/handlers"
 )
 
-func initRoutes(mux *http.ServeMux,manager *middleware.Manager){
+func InitRoutes(mux *http.ServeMux,manager *middleware.Manager){
 	//---routes for getting products---
 	mux.Handle(
 		"GET /products",
@@ -29,6 +29,20 @@ func initRoutes(mux *http.ServeMux,manager *middleware.Manager){
 		"GET /products/{id}",
 		manager.With(
 			http.HandlerFunc(handlers.GetProductByID),
+		),
+	)
+
+	mux.Handle(
+		"PUT /products/{id}",
+		manager.With(
+			http.HandlerFunc(handlers.UpdateProduct),
+		),
+	)
+
+	mux.Handle(
+		"DELETE /products/{id}",
+		manager.With(
+			http.HandlerFunc(handlers.DeleteProduct),
 		),
 	)
 

@@ -11,10 +11,46 @@ type Product struct{
 }
 
 //--empty slice---
-var ProductList []Product
+var productList []Product
+
+func Store(p Product)Product{
+	//Assign id
+	p.ID = len(productList)+1
+	productList = append(productList, p)
+	return p
+}
+func List() []Product{
+	return productList
+}
+func Get(productID int) *Product{
+	for _,product:= range productList{
+		if product.ID == productID{
+			return &product
+		} 		
+	}
+	return nil
+}
+func Update(product Product){
+	for idx,p:= range productList{
+		if p.ID == product.ID{
+			productList[idx]=product
+		}
+		
+	}
+
+}
+func Delete(productID int){
+	var tempList []Product = make([]Product, 0)
+	for _,p:= range productList{
+		if p.ID != productID{
+			tempList = append(tempList, p)
+		}		
+	}
+	productList = tempList
+}
 
 func init(){
-	prd1:= Product{
+	 prd1:= Product{
 		ID:1,
 		Name: "Anua Niacinamide 10% + TXA 4% Serum – 30ml",
     	Category: "k-beauty",
@@ -30,6 +66,6 @@ func init(){
     	NewPrice: 1380,
     	OldPrice: 1410,
 	}
-	ProductList = append(ProductList, prd1)
-	ProductList = append(ProductList, prd2)
+	productList = append(productList, prd1)
+	productList = append(productList, prd2)
 }

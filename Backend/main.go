@@ -1,9 +1,6 @@
 package main
 
-import (
-	"Backend/cmd"
-	
-)
+import "Backend/cmd"
 
 //---handling CORS----
 // func handleCORS(w http.ResponseWriter){

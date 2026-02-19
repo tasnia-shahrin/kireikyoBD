@@ -26,10 +26,9 @@ func CreateProducts(w http.ResponseWriter,r *http.Request){
 		http.Error(w,"please give valid json",400)
 		return
 	}
-	//assign id
-	newProduct.ID = len(Database.ProductList)+1
-	Database.ProductList = append(Database.ProductList, newProduct)
-
-	util.SendData(w,newProduct,201)
-	 
+	
+	createdProduct:= Database.Store(newProduct)
+	
+	util.SendData(w,createdProduct,201)
+	
 }
