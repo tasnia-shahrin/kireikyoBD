@@ -1,18 +1,20 @@
 package handlers
 
-import(
+import (
+	"Backend/Database"
+	
+	"Backend/util"
+	
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"encoding/json"
-	"Backend/Database"
-	"Backend/util"
+	
 )
-
-
 
 //---creating createproducts api----
 func CreateProducts(w http.ResponseWriter,r *http.Request){
 
+	
 	/*
 	1.take body information from r.Body
 	2.create an instance using Product struct with body information
@@ -32,3 +34,4 @@ func CreateProducts(w http.ResponseWriter,r *http.Request){
 	util.SendData(w,createdProduct,201)
 	
 }
+
