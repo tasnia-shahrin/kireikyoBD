@@ -2,7 +2,9 @@ package rest
 
 import (
 	"Backend/config"
-	
+	"Backend/rest/handlers/user"
+
+	"Backend/rest/handlers/product"
 	"Backend/rest/middleware"
 	"fmt"
 	"net/http"
@@ -10,7 +12,22 @@ import (
 	"strconv"
 )
 
-func Start(cnf config.Config){
+type Server struct{
+	//keeping productHandler,userHandler as dependency
+	productHandler *product.Handler
+	userHandler *user.Handler
+}
+//injecting dependencies inside NewServer()
+func NewServer(
+	productHandler *product.Handler,
+	userHandler *user.Handler,
+) *Server{
+	return &Server{
+		productHandler: productHandler,
+		userHandler: userHandler,
+	}
+}
+func (server *Server) Start(cnf config.Config){
 
 	
 	//-----Manager handles Middleware----
@@ -27,7 +44,9 @@ func Start(cnf config.Config){
 	//-----creating router-----
 	mux:=http.NewServeMux()
 	wrappedMux:=manager.WrapMux(mux)
-	InitRoutes(mux,manager)
+	
+	server.productHandler.RegisterRoutes(mux,manager)
+	server.userHandler.RegisterRoutes(mux,manager)
 	
 	addr:= ":" + strconv.Itoa(cnf.HttpPort)
 		fmt.Println("Server running on port ",addr)

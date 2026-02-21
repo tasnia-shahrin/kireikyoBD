@@ -1,4 +1,4 @@
-package handlers
+package product
 
 import (
 	"Backend/Database"
@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func GetProductByID(w http.ResponseWriter,r *http.Request){
+func (h *Handler) GetProductByID(w http.ResponseWriter,r *http.Request){
 	productID:= r.PathValue("id")
 	pId,err:= strconv.Atoi(productID)
 	if err!=nil{

@@ -1,4 +1,4 @@
-package handlers
+package product
 
 import (
 	"Backend/Database"
@@ -7,7 +7,7 @@ import (
 )
 
 //--------creating getProducts API-------
-func GetProducts(w http.ResponseWriter, r *http.Request){
+func (h *Handler) GetProducts(w http.ResponseWriter, r *http.Request){
 
 	util.SendData(w,Database.List(),200)
 

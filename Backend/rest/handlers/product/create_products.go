@@ -1,4 +1,4 @@
-package handlers
+package product
 
 import (
 	"Backend/Database"
@@ -12,7 +12,7 @@ import (
 )
 
 //---creating createproducts api----
-func CreateProducts(w http.ResponseWriter,r *http.Request){
+func (h *Handler) CreateProducts(w http.ResponseWriter,r *http.Request){
 
 	
 	/*
