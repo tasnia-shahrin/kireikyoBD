@@ -1,4 +1,4 @@
-package handlers
+package user
 
 import (
 	"Backend/Database"
@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func CreateUser(w http.ResponseWriter,r *http.Request){
+func (h *Handler) CreateUser(w http.ResponseWriter,r *http.Request){
 
 	/*
 	1.take body information from r.Body
